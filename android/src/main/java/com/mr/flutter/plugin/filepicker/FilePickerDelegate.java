@@ -44,6 +44,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     private String type;
     private int compressionQuality=20;
     private String[] allowedExtensions;
+    private String androidPackage;
     private EventChannel.EventSink eventSink;
 
     private byte[] bytes;
@@ -298,6 +299,9 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
                 intent.putExtra(Intent.EXTRA_MIME_TYPES, allowedExtensions);
             }
         }
+        if (androidPackage != null) {
+            intent.setPackage(androidPackage);
+        }
 
         if (intent.resolveActivity(this.activity.getPackageManager()) != null) {
             this.activity.startActivityForResult(intent, REQUEST_CODE);
@@ -308,7 +312,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
     }
 
     @SuppressWarnings("deprecation")
-    public void startFileExplorer(final String type, final boolean isMultipleSelection, final boolean withData, final String[] allowedExtensions, final int compressionQuality, final MethodChannel.Result result) {
+    public void startFileExplorer(final String type, final boolean isMultipleSelection, final boolean withData, final String[] allowedExtensions, final int compressionQuality, final MethodChannel.Result result, final String androidPackage) {
 
         if (!this.setPendingMethodCallAndResult(result)) {
             finishWithAlreadyActiveError(result);
@@ -319,6 +323,7 @@ public class FilePickerDelegate implements PluginRegistry.ActivityResultListener
         this.loadDataToMemory = withData;
         this.allowedExtensions = allowedExtensions;
         this.compressionQuality=compressionQuality;
+        this.androidPackage = androidPackage;
         // `READ_EXTERNAL_STORAGE` permission is not needed since SDK 33 (Android 13 or higher).
         // `READ_EXTERNAL_STORAGE` & `WRITE_EXTERNAL_STORAGE` are no longer meant to be used, but classified into granular types.
         // Reference: https://developer.android.com/about/versions/13/behavior-changes-13

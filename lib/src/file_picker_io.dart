@@ -37,6 +37,7 @@ class FilePickerIO extends FilePicker {
     bool? withReadStream = false,
     bool lockParentWindow = false,
     bool readSequential = false,
+    String? androidPackage,
   }) =>
       _getPath(
         type,
@@ -47,6 +48,7 @@ class FilePickerIO extends FilePicker {
         withData,
         withReadStream,
         compressionQuality,
+        androidPackage,
       );
 
   @override
@@ -79,6 +81,7 @@ class FilePickerIO extends FilePicker {
     bool? withData,
     bool? withReadStream,
     int? compressionQuality,
+    String? androidPackage,
   ) async {
     final String type = fileType.name;
     if (type != 'custom' && (allowedExtensions?.isNotEmpty ?? false)) {
@@ -106,6 +109,7 @@ class FilePickerIO extends FilePicker {
         'allowCompression': allowCompression,
         'withData': withData,
         'compressionQuality': compressionQuality,
+        'androidPackage': androidPackage,
       });
 
       if (result == null) {

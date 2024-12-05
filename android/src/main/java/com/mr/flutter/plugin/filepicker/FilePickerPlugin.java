@@ -114,6 +114,7 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
     private static boolean isMultipleSelection = false;
     private static boolean withData = false;
     private static int compressionQuality;
+    private static String androidPackage;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -152,12 +153,13 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
             withData = (boolean) arguments.get("withData");
             compressionQuality=(int) arguments.get("compressionQuality");
             allowedExtensions = FileUtils.getMimeTypes((ArrayList<String>) arguments.get("allowedExtensions"));
+            androidPackage = (String) arguments.get("androidPackage");
         }
 
         if (call.method != null && call.method.equals("custom") && (allowedExtensions == null || allowedExtensions.length == 0)) {
             result.error(TAG, "Unsupported filter. Make sure that you are only using the extension without the dot, (ie., jpg instead of .jpg). This could also have happened because you are using an unsupported file extension.  If the problem persists, you may want to consider using FileType.any instead.", null);
         } else {
-            this.delegate.startFileExplorer(fileType, isMultipleSelection, withData, allowedExtensions, compressionQuality,result);
+            this.delegate.startFileExplorer(fileType, isMultipleSelection, withData, allowedExtensions, compressionQuality,result, androidPackage);
         }
 
     }
